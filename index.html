@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>个人产品作品集</title>
+    <link rel="stylesheet" href="style.css"/>
+    <!-- 引入 代码高亮 Prism.js 样式 (Dark主题) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"/>
+</head>
+<body>
+<div class="layout-container">
+
+    <!-- 左栏：个人信息区 -->
+    <aside class="sidebar">
+        <div class="profile-card">
+            <img class="avatar" src="zi_yuan_wen_jian_jia/头像图片.png" alt="个人头像"/>
+            <h1 class="name">小七在做自动化</h1>
+            <p class="bio">
+                把重复的事情交给自动化<br/>
+                把空闲的时间留给你<br/>
+                专注于分享普通人<br/>
+                也能实现的自动化操作<br/>
+                解放你的时间
+            </p>
+        </div>
+    </aside>
+
+    <!-- 右栏：产品展示区 -->
+    <main class="content">
+        <h2 class="section-title">个人产品</h2>
+
+        <div class="product-grid">
+
+            <!-- 产品卡片 1 -->
+            <article class="product-card">
+                <div class="product-image">
+                    <img src="zi_yuan_wen_jian_jia/产品封面.png" alt=""/>
+                </div>
+                <div class="product-info">
+                    <div class="tags">
+                        <span class="tag">追剧神器</span>
+                        <span class="tag">自动化</span>
+                        <span class="tag">极简免配置</span>
+                    </div>
+                    <h3 class="product-title">自动跳片头追剧小助手</h3>
+                    <p class="product-desc">
+                        告别手动拉进度条！第一集标记片头时长后，后续剧集自动精准跳过片头。极简零配置，无需频繁碰手机，助你一口气无缝刷完整部剧。
+                    </p>
+                    <div class="product-actions">
+                        <a href="zi_yuan_wen_jian_jia/跳过片头.apk" class="btn btn-primary" target="_blank">📥 下载</a>
+                        <button type="button" class="btn btn-secondary" onclick="openCodeModal()">💻 查看源码</button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+</div>
+
+<!-- 源码查看弹窗 -->
+<div id="codeModal" class="modal-backdrop" onclick="closeCodeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>main.js - 源码预览</h3>
+            <button type="button" class="close-btn" onclick="closeCodeModal(event)">&times;</button>
+        </div>
+        <div class="modal-body">
+            <pre><code id="codeBlock" class="language-javascript">// 正在加载代码...</code></pre>
+        </div>
+    </div>
+</div>
+
+<!-- 引入 代码高亮 Prism.js 脚本 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script>
+    function openCodeModal() {
+        const modal = document.getElementById('codeModal');
+        modal.style.display = 'flex';
+
+        // 动态加载并使用 TextDecoder 强制以 UTF-8 解码，彻底解决中文乱码问题
+        fetch('zi_yuan_wen_jian_jia/main.js')
+            .then(response => {
+                if (!response.ok) throw new Error('网络响应异常');
+                return response.arrayBuffer();
+            })
+            .then(buffer => {
+                const decoder = new TextDecoder('utf-8');
+                const codeText = decoder.decode(buffer);
+                const codeBlock = document.getElementById('codeBlock');
+                codeBlock.textContent = codeText;
+                Prism.highlightElement(codeBlock);
+            })
+            .catch(err => {
+                document.getElementById('codeBlock').textContent = '// 读取源码失败，请检查文件路径或确保在 Web 服务（如 Live Server）下运行。';
+            });
+    }
+
+    function closeCodeModal(event) {
+        if (event) event.stopPropagation();
+        document.getElementById('codeModal').style.display = 'none';
+    }
+</script>
+</body>
+</html>
