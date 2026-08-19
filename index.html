@@ -45,6 +45,8 @@
                     </p>
                     <div class="product-actions">
                         <a href="zi_yuan_wen_jian_jia/跳过片头.apk" class="btn btn-primary" target="_blank">📥 下载</a>
+                        <button type="button" class="btn btn-secondary" onclick="openTutorialModal()">📖 使用教程
+                        </button>
                         <button type="button" class="btn btn-secondary" onclick="openCodeModal()">💻 查看源码</button>
                     </div>
                 </div>
@@ -59,7 +61,7 @@
 <div id="codeModal" class="modal-backdrop" onclick="closeCodeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
         <div class="modal-header">
-            <h3>main.js - 源码预览</h3>
+            <h3>跳过op.js - 源码预览</h3>
             <button type="button" class="close-btn" onclick="closeCodeModal(event)">&times;</button>
         </div>
         <div class="modal-body">
@@ -68,15 +70,33 @@
     </div>
 </div>
 
+<!-- 使用教程弹窗 -->
+<div id="tutorialModal" class="modal-backdrop" onclick="closeTutorialModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>📖 使用教程</h3>
+            <button type="button" class="close-btn" onclick="closeTutorialModal(event)">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="markdownBody" class="markdown-body">
+                正在加载教程...
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 引入 代码高亮 Prism.js 脚本 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<!-- 引入 Markdown 解析库 Marked.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.min.js"></script>
+
 <script>
+    // --- 源码弹窗控制 ---
     function openCodeModal() {
         const modal = document.getElementById('codeModal');
         modal.style.display = 'flex';
 
-        // 动态加载并使用 TextDecoder 强制以 UTF-8 解码，彻底解决中文乱码问题
-        fetch('zi_yuan_wen_jian_jia/main.js')
+        fetch('zi_yuan_wen_jian_jia/跳过op.js')
             .then(response => {
                 if (!response.ok) throw new Error('网络响应异常');
                 return response.arrayBuffer();
@@ -96,6 +116,32 @@
     function closeCodeModal(event) {
         if (event) event.stopPropagation();
         document.getElementById('codeModal').style.display = 'none';
+    }
+
+    // --- 使用教程弹窗控制 ---
+    function openTutorialModal() {
+        const modal = document.getElementById('tutorialModal');
+        modal.style.display = 'flex';
+
+        fetch('zi_yuan_wen_jian_jia/app使用教程.md')
+            .then(response => {
+                if (!response.ok) throw new Error('网络响应异常');
+                return response.arrayBuffer();
+            })
+            .then(buffer => {
+                const decoder = new TextDecoder('utf-8');
+                const mdText = decoder.decode(buffer);
+                // 使用 marked 渲染 Markdown 为 HTML
+                document.getElementById('markdownBody').innerHTML = marked.parse(mdText);
+            })
+            .catch(err => {
+                document.getElementById('markdownBody').innerHTML = '<p style="color:#ff6b6b;">⚠️ 读取教程失败，请检查 app使用教程.md 文件路径或确保在 Web 服务（如 Live Server）下运行。</p>';
+            });
+    }
+
+    function closeTutorialModal(event) {
+        if (event) event.stopPropagation();
+        document.getElementById('tutorialModal').style.display = 'none';
     }
 </script>
 </body>

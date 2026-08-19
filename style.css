@@ -261,6 +261,34 @@ body {
     font-size: 0.88rem;
 }
 
+/* Markdown 教程排版样式 */
+.markdown-body {
+    line-height: 1.6;
+    color: #e1e1e1;
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+    margin-top: 1.2rem;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.3rem;
+    color: #fff;
+}
+
+.markdown-body ul, .markdown-body ol {
+    padding-left: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.markdown-body li {
+    margin-bottom: 0.4rem;
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 1.2rem 0;
+}
 /* ---------------- 移动端响应式布局 ---------------- */
 @media (max-width: 768px) {
     .layout-container {
